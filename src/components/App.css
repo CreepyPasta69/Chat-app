@@ -1,0 +1,17 @@
+.app{
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 30px);
+    padding: 15px;
+}
+
+@media (max-width: 1200px) {
+    .app{
+        padding: 0px;
+        height: 100vh;
+    }
+
+    .sidebar{
+        border-radius: 0;
+    }
+}
