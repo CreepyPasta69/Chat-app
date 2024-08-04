@@ -22,7 +22,8 @@
 }
 
 .chat-area > .header > #back-button{
-    display: none;
+    position: absolute;
+    left: 10px;
 }
 
 .chat-area > .header > .user{
@@ -101,21 +102,9 @@
     height: 20px;
 }
 
-@media (max-width: 850px) {
-    .chat-area{
-        display: none;
-    }
-
-    .chat-area > .header > #back-button{
-        position: absolute;
-        left: 10px;
-        display: block;
-    }
-}
-
 @media (max-width: 1200px) {
     .chat-area{
         padding: 20px;
-        height: 100%;
+        height: 100dvh;
     }
 }
