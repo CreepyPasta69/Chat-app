@@ -9,6 +9,7 @@
 }
 
 .contact > img{
-    height: 50px;
-    width: 50px;
+    height: 20px;
+    width: 20px;
+    padding: 0px 5px;
 }

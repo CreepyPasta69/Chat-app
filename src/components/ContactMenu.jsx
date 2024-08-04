@@ -10,11 +10,10 @@ export default function ContactMenu(props) {
         <input type="text" placeholder="Search..." />
       </div>
       <div className="contacts" onClick={props.toggle}>
-        <Contact />
-        <Contact />
-        <Contact />
-        <Contact />
-        <Contact />
+        <Contact name="User 1"/>
+        <Contact name="User 2"/>
+        <Contact name="User 3"/>
+        <Contact name="User 4"/>
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 import React from "react";
-import profile from "../assets/profile.png"
+import user from "../assets/user.svg"
 import "./Contact.css"
 
-export default function Contact(){
+export default function Contact(props){
     return(
         <div className="contact">
-            <img src={profile} alt="" />
-            <p>Name</p>
+            <img src={user} alt="" />
+            <p>{props.name}</p>
         </div>
     )
 }

@@ -1,7 +1,8 @@
 import React from "react";
 
 import back from "../assets/back.svg"
-import profile from "../assets/profile.png"
+import user from "../assets/user.svg"
+import planet from "../assets/planet.png"
 import arrow from "../assets/arrow.png"
 
 import "./ChatArea.css";
@@ -12,10 +13,16 @@ export default function ChatArea(props) {
       <div className="header">
         <img src={back} alt="back" id="back-button" onClick={props.toggle} />
         <div className="user">
-          <img src={profile} alt="user" />
+          <img src={user} alt="user" />
           <p>username</p>
         </div>
       </div>
+
+      <div className="messages">
+        <img src={planet} alt="" />
+        <p>Site under construction....</p>
+      </div>
+
       <div className="message-input">
         <input type="text" placeholder="message.." />
         <button>
