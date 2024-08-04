@@ -13,11 +13,7 @@ export default function SideBar(props) {
   return (
     <div className="sidebar">
       <div className="hero">
-        <img
-          src={logo}
-          alt="logo"
-          onClick={() => console.log("i feel molested")}
-        />
+        <img src={logo} alt="logo" onClick={() => alert("Echo")} />
       </div>
       <div className="menu">
         <img src={home} alt="home" />
