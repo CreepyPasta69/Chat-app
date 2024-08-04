@@ -1,11 +1,6 @@
-html{
-    height: -webkit-fill-available;
-}
-
 body{
     margin: 0;
-    height: 100svh;
-    height: -webkit-fill-available;
+    height: 100vh;
     width: 100vw;
     box-sizing: border-box;
     background-color: #1D1F2B;
