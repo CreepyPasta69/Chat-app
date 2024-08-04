@@ -1,0 +1,93 @@
+.chat-area{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 0px 30px;
+}
+
+.chat-area > .header{
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    background-color: #252839;
+    padding: 0px 20px;
+    border-radius: 10px;
+}
+
+.chat-area > .header > #back-button{
+    display: none;
+}
+
+.chat-area > .header > .user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.user > img{
+    width: 30px;
+}
+
+.user > p{
+    margin: 0;
+}
+
+.chat-area > .header > img {
+    width: 30px;
+}
+
+.chat-area > .message-input{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.message-input > input{
+    flex: 1;
+    background-color: #252839;
+    font-family: Montserrat;
+    color: white;
+    border: none;
+    height: 45px;
+    border-radius: 5px;
+    padding: 0px 20px;
+}
+
+.message-input > button{
+    border: none;
+    border-radius: 5px;
+    background-color: #6785FF;
+    height: 45px;
+    width: 45px;
+}
+
+.message-input > button > img{
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 850px) {
+    .chat-area{
+        display: none;
+    }
+
+    .chat-area > .header > #back-button{
+        position: absolute;
+        left: 10px;
+        display: block;
+    }
+}
+
+@media (max-width: 1200px) {
+    .chat-area{
+        padding: 20px;
+        height: calc(100% - 40px);
+    }
+}

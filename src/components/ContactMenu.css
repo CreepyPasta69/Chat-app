@@ -1,0 +1,32 @@
+.contact-menu{
+    width: 360px;
+    height: calc(100%-60px);
+    padding: 20px 30px;
+    background-color: #252839;
+}
+
+.contact-menu > .header{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.contact-menu > .header > h1{
+    margin: 0px;
+}
+
+.contact-menu > .header > input{
+    height: 25px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 0;
+    text-indent: 15px;
+}
+
+@media (max-width: 850px) {
+    .contact-menu{
+        width: 100%;
+    }
+}
