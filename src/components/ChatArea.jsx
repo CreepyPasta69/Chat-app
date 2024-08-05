@@ -1,20 +1,20 @@
 import React from "react";
 
-import back from "../assets/back.svg"
-import user from "../assets/user.svg"
-import planet from "../assets/planet.png"
-import arrow from "../assets/arrow.png"
+import back from "../assets/back.svg";
+import user from "../assets/user.svg";
+import planet from "../assets/planet.png";
+import arrow from "../assets/arrow.png";
 
 import "./ChatArea.css";
 
 export default function ChatArea(props) {
   return (
-    <div className="chat-area" style={props.state ? {display: "none"} : {display: "flex"}}>
+    <div className="chat-area" >
       <div className="header">
         <img src={back} alt="back" id="back-button" onClick={props.toggle} />
         <div className="user">
           <img src={user} alt="user" />
-          <p>username</p>
+          <p>{props.currentContact.name}</p>
         </div>
       </div>
 
