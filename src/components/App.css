@@ -1,9 +1,9 @@
 .app{
     display: flex;
     flex-direction: row;
-    height: 100dvh;
+    height: calc(100dvh - 30px);
     padding: 15px;
-    box-sizing: border-box;
+
     animation: fadeInAnimation ease 1s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
