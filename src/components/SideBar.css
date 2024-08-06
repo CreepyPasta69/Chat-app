@@ -5,13 +5,13 @@
     justify-content: space-between;
     box-sizing: border-box;
     height: 100%;
-    width: clamp(75px ,9.0909%, 100px);
-    min-width: 75px;
+    min-width: 100px;
     padding: 30px 0px;
     border-radius: 30px 0px 0px 30px;
     background-color: #6785FF;
     text-align: center;
     overflow: hidden;
+    user-select: none;
 }
 
 .menu, .hero, .logout{
@@ -24,12 +24,53 @@
 
 .menu{
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    padding: 0;
+    color: black;
 }
 
-.menu > img{
+.menu > .menu-element{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.menu-element:nth-child(1).active ~ #indicator{
+    transform: translateY(calc(95px * 0))
+}
+.menu-element:nth-child(2).active ~ #indicator{
+    transform: translateY(calc(95px * 1))
+}
+.menu-element:nth-child(3).active ~ #indicator{
+    transform: translateY(calc(95px * 2))
+}
+
+.menu > .menu-element > p{
+    position: absolute;
+    margin: 0;
+    right: -30px;
+    width: 60px;
+    transform: rotate(-90deg);
+}
+
+.menu > .menu-element > svg{
     height: 25px;
     width: 25px;
-    cursor: pointer;
+    padding-right: 20px;
+    pointer-events: none;
+}
+
+.active{
+    color: white;
+}
+
+.active > svg{
+    fill: white;
 }
 
 .hero > img{
@@ -45,10 +86,14 @@
 }
 
 #indicator{
+    z-index: 1;
     position: absolute;
-    height: 160px;
-    width: 160px;
-    right: -67px;
-    top: 5px;
+    height: 200px;
+    width: 200px;
+    right: -78px;
+    top: -90px;
     cursor: default;
-}
+    transition: transform 0.3s ease-in-out;
+    user-select:none;
+    pointer-events: none
+} 
