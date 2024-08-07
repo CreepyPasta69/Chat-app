@@ -1,5 +1,6 @@
 .friends{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
@@ -7,4 +8,12 @@
     animation: fadeInAnimation ease 1s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
+}
+
+.friends > .add-friends{
+    height: 100%;
+}
+
+.friends > .friend-requests{
+    height: 100%;
 }

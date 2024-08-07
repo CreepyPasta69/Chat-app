@@ -1,26 +1,22 @@
 export const contacts = [
-    {
-        id: 1,
-        name: "User 1"
-    },
-    {
-        id: 2,
-        name: "User 2"
-    },
-    {
-        id: 3,
-        name: "User 3"
-    },
-    {
-        id: 4,
-        name: "User 4"
-    },
-    {
-        id: 5,
-        name: "User 5"
-    },
-    {
-        id: 6,
-        name: "User 6"
-    },
-]
+    { id: 1, name: "Arjun" },
+    { id: 2, name: "Kavi" },
+    { id: 3, name: "Anjali" },
+    { id: 4, name: "Priya" },
+    { id: 5, name: "Vikram" },
+    { id: 6, name: "Lakshmi" },
+    { id: 7, name: "Suresh" },
+    { id: 8, name: "Nisha" },
+    { id: 9, name: "Ravi" },
+    { id: 10, name: "Deepa" },
+    { id: 11, name: "Sanjay" },
+    { id: 12, name: "Ganesh" },
+    { id: 13, name: "Divya" },
+    { id: 14, name: "Vani" },
+    { id: 15, name: "Ajith" },
+    { id: 16, name: "Karthik" },
+    { id: 17, name: "Meena" },
+    { id: 18, name: "Surya" },
+    { id: 19, name: "Uma" },
+    { id: 20, name: "Mohan" },
+];

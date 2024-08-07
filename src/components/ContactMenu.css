@@ -1,7 +1,7 @@
 .contact-menu{
     width: 360px;
     height: 100%;
-    padding: 20px 30px;
+    padding: 20px 15px 20px 20px;
     background-color: #252839;
     box-sizing: border-box;
 }
@@ -24,4 +24,13 @@
     border-radius: 5px;
     padding: 0;
     text-indent: 15px;
+}
+
+.contact-menu > .contacts {
+    height: calc(100% - 109px);
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width:thin;
+    scrollbar-color: #6785FF #1D1F2B;
+    scroll-snap-type: none;
 }

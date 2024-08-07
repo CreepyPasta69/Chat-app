@@ -53,23 +53,27 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
+    background-image: url(/src/assets/doodle.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.chat-area > .messages > img{
-    width: 80%;
-    max-width: 400px;
-    opacity: 80%;
+.chat-area > .messages{
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0px 5%;
+    box-sizing: border-box;
 }
 
-.chat-area > .messages > p{
+/* .chat-area > .messages > p{
     font-family: "Comfortaa";
     font-size: small;
     font-weight: lighter;
     margin: 0;
     opacity: 80%;
-}
-
-
+} */
 
 .chat-area > .message-input{
     display: flex;

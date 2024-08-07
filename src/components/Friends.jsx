@@ -5,7 +5,12 @@ import "./Friends.css"
 export default function Friends(){
     return(
         <div className="friends">
-            <h1>Really?</h1>
+            <div className="add-friends">
+                <h1>Add Friends</h1>
+            </div>
+            <div className="friend-requests">
+                <h1>Friend Requests</h1>
+            </div>
         </div>
     )
 }
