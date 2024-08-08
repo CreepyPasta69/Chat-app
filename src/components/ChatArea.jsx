@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
+import Message from "./Message";
+
 import back from "../assets/back.svg";
 import user from "../assets/user.svg";
-import planet from "../assets/planet.png";
 import arrow from "../assets/arrow.png";
 
 import "./ChatArea.css";
