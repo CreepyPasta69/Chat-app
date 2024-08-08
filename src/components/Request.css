@@ -1,0 +1,47 @@
+.request{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    padding: 0 5px;
+}
+
+.request > .user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.request > .user > svg{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.request > .user > .details{
+    height: 40px;
+}
+
+.request > .user > .details> p{
+    margin: 0;
+    text-align: left;
+}
+
+.request > .user > .details> .name{
+    font-weight: bold;
+}
+
+.request > .choice{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.request > .choice > svg{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}

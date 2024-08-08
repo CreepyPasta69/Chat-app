@@ -33,11 +33,11 @@
     gap: 10px;
 }
 
-.user > img{
+.chat-area > .header > .user > img{
     width: 20px;
 }
 
-.user > p{
+.chat-area > .header > .user > p{
     margin: 0;
 }
 
@@ -53,9 +53,9 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background-image: url(/src/assets/doodle.png);
+    /* background-image: url(/src/assets/doodle.png);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
 }
 
 .chat-area > .messages{

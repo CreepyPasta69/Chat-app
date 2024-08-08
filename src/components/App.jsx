@@ -8,7 +8,7 @@ import SideBar from "./SideBar";
 import Login from "./Login.jsx";
 import Home from "./Home.jsx";
 import ChatBox from "./ChatBox";
-import Friends from "./Friends.jsx";
+import Profile from "./Profile.jsx";
 
 import "./App.css";
 
@@ -83,9 +83,9 @@ export default function App() {
             setActiveMenu={setActiveMenu}
             logout={signOut}
           />
-          {activeMenu === "Home" && <Home userData={userData} />}
+          {activeMenu === "Home" && userData && <Home uid={userData.uid} displayName={userData.displayName}/>}
           {activeMenu === "Chat" && <ChatBox />}
-          {activeMenu === "Friends" && <Friends />}
+          {activeMenu === "Profile" && <Profile userData={userData}/>}
         </div>
       )}
     </>
