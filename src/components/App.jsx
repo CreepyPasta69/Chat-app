@@ -35,10 +35,14 @@ export default function App() {
             photoURL: user.photoURL,
             createdAt: new Date(),
             friends: [],
+            friendRequests: {
+              sent: [],
+              recieved: [],
+            },
           });
         }
-      } else {
-        setUserData(null);
+        const newUserDoc = await getDoc(userDocRef);
+        setUserData(newUserDoc.data());
       }
     } catch (error) {
       console.log("Error while signing in: ", error);
@@ -53,19 +57,16 @@ export default function App() {
   useEffect(() => {
     if (user && !userData) {
       async function fetchUserData() {
-        const user = auth.currentUser;
-        if (user) {
-          try {
-            const userDocRef = doc(db, "users", user.uid);
-            const userDoc = await getDoc(userDocRef);
-            if (userDoc.exists()) {
-              setUserData(userDoc.data());
-            } else {
-              console.log("File does not exist");
-            }
-          } catch {
-            console.log("Error fetching user data: ", error);
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userDocRef);
+          if (userDoc.exists()) {
+            setUserData(userDoc.data());
+          } else {
+            console.log("File does not exist");
           }
+        } catch(error) {
+          console.log("Error fetching user data: ", error);
         }
       }
       fetchUserData();
@@ -83,9 +84,11 @@ export default function App() {
             setActiveMenu={setActiveMenu}
             logout={signOut}
           />
-          {activeMenu === "Home" && userData && <Home uid={userData.uid} displayName={userData.displayName}/>}
+          {activeMenu === "Home" && userData && (
+            <Home uid={userData.uid} displayName={userData.displayName} />
+          )}
           {activeMenu === "Chat" && <ChatBox />}
-          {activeMenu === "Profile" && <Profile userData={userData}/>}
+          {activeMenu === "Profile" && <Profile userData={userData} />}
         </div>
       )}
     </>

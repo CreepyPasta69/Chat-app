@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {db} from "../firebase.js"
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 import Request from "./Request";
 
@@ -14,6 +16,25 @@ export default function Home(props) {
     useState(false);
 
   const [mailId, setMailId] = useState("");
+
+  const sendFriendRequest = async (senderId, recieverId) => {
+    
+    const senderRef = doc(db, "users", senderId)
+    const senderDoc = await getDoc(senderRef)
+
+    const recieverRef = doc(db, "users", recieverId)
+    const recieverDoc = await getDoc(recieverRef)
+
+    await senderRef.update({
+      'friendRequests.sent': firebase.firestore.FieldValue.arrayUnion(recieverId)
+    })
+
+    await recieverRef.update({
+      'friendRequests.recieved': firebase.firestore.FieldValue.arrayUnion(senderId)
+    })
+
+    console.log("Friend Request Sent")
+  };
 
   return (
     <div className="home">
@@ -68,7 +89,7 @@ export default function Home(props) {
             />
             <button
               onClick={() => {
-                console.log(mailId);
+                sendFriendRequest(props.uid,"zugwtldtaCahbdUfFMlXCyppBW82")
                 setMailId("");
               }}
             >

@@ -5,6 +5,7 @@ export const contacts = [
     { id: 4, name: "Priya" },
     { id: 5, name: "Vikram" },
     { id: 6, name: "Lakshmi" },
+    { id: 69, name: "Vegina" },
     { id: 7, name: "Suresh" },
     { id: 8, name: "Nisha" },
     { id: 9, name: "Ravi" },
@@ -13,10 +14,10 @@ export const contacts = [
     { id: 12, name: "Ganesh" },
     { id: 13, name: "Divya" },
     { id: 14, name: "Vani" },
-    { id: 15, name: "Ajith" },
+    { id: 15, name: "Dalaadadadasdsadaasfadgefgjfyjrfyujkf" },
     { id: 16, name: "Karthik" },
     { id: 17, name: "Meena" },
     { id: 18, name: "Surya" },
     { id: 19, name: "Uma" },
-    { id: 20, name: "Mohan" },
+    { id: 20, name: "Mohan" }
 ];
