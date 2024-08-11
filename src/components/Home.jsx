@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import {db} from "../firebase.js"
-import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../firebase.js";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+  query,
+  collection,
+  where,
+} from "firebase/firestore";
 
 import Request from "./Request";
 
@@ -17,21 +26,28 @@ export default function Home(props) {
 
   const [mailId, setMailId] = useState("");
 
-  const sendFriendRequest = async (senderId, recieverId) => {
-    
-    const senderRef = doc(db, "users", senderId)
-    const senderDoc = await getDoc(senderRef)
+  const sendFriendRequest = async (senderId, recieverEmail) => {
+    const senderRef = doc(db, "users", senderId);
+    const senderDoc = await getDoc(senderRef);
 
-    const recieverRef = doc(db, "users", recieverId)
-    const recieverDoc = await getDoc(recieverRef)
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", recieverEmail)
+    );
+    const querySnapshot = await getDocs(q);
+    const recieverId = querySnapshot.docs[0].data().uid;
+    console.log(recieverId);
+
+    const recieverRef = doc(db, "users", recieverId);
+    const recieverDoc = await getDoc(recieverRef);
 
     await updateDoc(senderRef, {
-      'friendRequests.sent' : arrayUnion(recieverId)
-    })
+      "friendRequests.sent": arrayUnion(recieverId),
+    });
 
     await updateDoc(recieverRef, {
-      'friendRequests.recieved' : arrayUnion(senderId)
-    })
+      "friendRequests.recieved": arrayUnion(senderId),
+    });
   };
 
   return (
@@ -87,7 +103,7 @@ export default function Home(props) {
             />
             <button
               onClick={() => {
-                sendFriendRequest(props.uid,"zugwtldtaCahbdUfFMlXCyppBW82")
+                sendFriendRequest(props.uid, "thirumal.viswa7@gmail.com");
                 setMailId("");
               }}
             >
