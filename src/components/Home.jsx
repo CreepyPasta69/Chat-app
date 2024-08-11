@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {db} from "../firebase.js"
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
 import Request from "./Request";
 
@@ -25,15 +25,13 @@ export default function Home(props) {
     const recieverRef = doc(db, "users", recieverId)
     const recieverDoc = await getDoc(recieverRef)
 
-    await senderRef.update({
-      'friendRequests.sent': firebase.firestore.FieldValue.arrayUnion(recieverId)
+    await updateDoc(senderRef, {
+      'friendRequests.sent' : arrayUnion(recieverId)
     })
 
-    await recieverRef.update({
-      'friendRequests.recieved': firebase.firestore.FieldValue.arrayUnion(senderId)
+    await updateDoc(recieverRef, {
+      'friendRequests.recieved' : arrayUnion(senderId)
     })
-
-    console.log("Friend Request Sent")
   };
 
   return (
