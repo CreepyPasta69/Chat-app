@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../firebase.js";
 import {
   doc,
@@ -9,6 +9,7 @@ import {
   query,
   collection,
   where,
+  arrayRemove,
 } from "firebase/firestore";
 
 import Request from "./Request";
@@ -20,11 +21,22 @@ export default function Home(props) {
     return <div className="loding">Loading...</div>;
   }
 
-  const [addFriedVisibility, setAddFriendVisibility] = useState(false);
+  const [addFriendVisibility, setAddFriendVisibility] = useState(false);
   const [friendRequestsVisibility, setFriendRequestsVisibility] =
     useState(false);
 
   const [mailId, setMailId] = useState("");
+  const [friendRequests, setFriendRequests] = useState([]);
+
+  useEffect(() => {
+    loadFriendRequests();
+  }, []);
+
+  useEffect(() => {
+    if (friendRequestsVisibility) {
+      loadFriendRequests();
+    }
+  }, [friendRequestsVisibility]);
 
   const sendFriendRequest = async (senderId, recieverEmail) => {
     const senderRef = doc(db, "users", senderId);
@@ -50,6 +62,90 @@ export default function Home(props) {
     });
   };
 
+  const loadFriendRequests = async () => {
+    const userRef = doc(db, "users", props.uid);
+    const userFriendRequests = (await getDoc(userRef)).data().friendRequests
+      .recieved;
+
+    const friendRequests = await Promise.all(
+      userFriendRequests.map(async (friendId) => {
+        const friendRef = doc(db, "users", friendId);
+        const friendDoc = (await getDoc(friendRef)).data();
+        return {
+          id: friendId,
+          name: friendDoc.displayName,
+          mail: friendDoc.email,
+          profile: friendDoc.photoURL,
+        };
+      })
+    );
+    setFriendRequests(friendRequests);
+  };
+
+  const acceptFriendRequest = async (friendId) => {
+    const userRef = doc(db, "users", props.uid);
+    const friendRef = doc(db, "users", friendId);
+
+    try {
+      await updateDoc(userRef, {
+        friends: arrayUnion(friendId),
+        "friendRequests.recieved": arrayRemove(friendId),
+      });
+
+      await updateDoc(friendRef, {
+        friends: arrayUnion(props.uid),
+        "friendRequests.sent": arrayRemove(props.uid),
+      });
+
+      setFriendRequests((prevRequests) =>
+        prevRequests.filter((request) => request.id !== friendId)
+      );
+
+      console.log("Friend Request Accepted");
+    } catch (error) {
+      console.log("Error occured while accepting Friend Request : ", error);
+    } finally {
+      loadFriendRequests();
+    }
+  };
+
+  const declineFriendRequest = async (friendId) => {
+    const userRef = doc(db, "users", props.uid);
+    const friendRef = doc(db, "users", friendId);
+
+    try {
+      await updateDoc(userRef, {
+        "friendRequests.recieved": arrayRemove(friendId),
+      });
+
+      await updateDoc(friendRef, {
+        "friendRequests.sent": arrayRemove(props.uid),
+      });
+
+      setFriendRequests((prevRequests) =>
+        prevRequests.filter((request) => request.id !== friendId)
+      );
+
+      console.log("Friend Request Declined");
+    } catch (error) {
+      console.log("Error occured while declining Friend Request : ", error);
+    } finally {
+      loadFriendRequests();
+    }
+  };
+
+  const requests = friendRequests.map((friend) => (
+    <Request
+      key={friend.id}
+      id={friend.id}
+      name={friend.name}
+      mail={friend.mail}
+      profile={friend.profile}
+      onAccept={acceptFriendRequest}
+      onDecline={declineFriendRequest}
+    />
+  ));
+
   return (
     <div className="home">
       <h1>Welcome, {props.displayName}</h1>
@@ -58,6 +154,7 @@ export default function Home(props) {
           className="add-friend-btn"
           onClick={() => {
             setAddFriendVisibility(true);
+            setFriendRequestsVisibility(false);
           }}
         >
           <svg
@@ -73,6 +170,7 @@ export default function Home(props) {
           className="friend-requests-btn"
           onClick={() => {
             setFriendRequestsVisibility(true);
+            setAddFriendVisibility(false);
           }}
         >
           <svg
@@ -84,11 +182,11 @@ export default function Home(props) {
           </svg>
           <p>Friend Requests</p>
           <span>
-            <p>3</p>
+            {friendRequests.length == true && <p>{friendRequests.length}</p>}
           </span>
         </div>
       </div>
-      {addFriedVisibility && (
+      {addFriendVisibility && (
         <div className="add-friend">
           <h2>Add a Friend</h2>
           <p>Enter the mail of the User</p>
@@ -128,11 +226,13 @@ export default function Home(props) {
       {friendRequestsVisibility && (
         <div className="friend-requests">
           <h2>Friend Requests</h2>
-          Someone wants to be your friend
-          <div className="requests">
-            <Request />
-            <Request />
-          </div>
+          {friendRequests.length == 0 ? (
+            <p>No friend requests right now.....</p>
+          ) : (
+            <p>Someone wants to be your friend</p>
+          )}
+
+          <div className="requests">{requests}</div>
           <svg
             className="back"
             onClick={() => {
