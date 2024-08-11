@@ -28,7 +28,7 @@ export default function Home(props) {
 
   const sendFriendRequest = async (senderId, recieverEmail) => {
     const senderRef = doc(db, "users", senderId);
-    const senderDoc = await getDoc(senderRef);
+    const senderDoc = await getDoc(senderRef); // need for checking whether request already sent or not
 
     const q = query(
       collection(db, "users"),
@@ -103,7 +103,7 @@ export default function Home(props) {
             />
             <button
               onClick={() => {
-                sendFriendRequest(props.uid, "thirumal.viswa7@gmail.com");
+                sendFriendRequest(props.uid, mailId.toLowerCase());
                 setMailId("");
               }}
             >
