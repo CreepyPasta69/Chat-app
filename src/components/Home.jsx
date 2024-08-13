@@ -46,10 +46,15 @@ export default function Home(props) {
       collection(db, "users"),
       where("email", "==", recieverEmail)
     );
+
     const querySnapshot = await getDocs(q);
-    const recieverId = querySnapshot.docs[0].data().uid;
+
+    if (querySnapshot.empty) {
+      console.error("User with that email does not exist.");
+    }
     console.log(recieverId);
 
+    const recieverId = querySnapshot.docs[0].data().uid;
     const recieverRef = doc(db, "users", recieverId);
     const recieverDoc = await getDoc(recieverRef);
 
@@ -90,10 +95,12 @@ export default function Home(props) {
       await updateDoc(userRef, {
         friends: arrayUnion(friendId),
         "friendRequests.recieved": arrayRemove(friendId),
+        "friendRequests.sent": arrayRemove(friendId),
       });
 
       await updateDoc(friendRef, {
         friends: arrayUnion(props.uid),
+        "friendRequests.recieved": arrayRemove(props.uid),
         "friendRequests.sent": arrayRemove(props.uid),
       });
 

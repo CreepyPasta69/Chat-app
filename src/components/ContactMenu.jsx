@@ -25,14 +25,19 @@ export default function ContactMenu(props) {
 
   return (
     <div className="contact-menu">
+      <h1>Chats</h1>
       <div className="header">
-        <h1>Chats</h1>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        
+        <div className="search">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {search !== "" && <button onClick={()=>{setSearch("")}}>x</button>}
+        </div>
+        <button>+</button>
       </div>
       <div className="contacts">{contacts}</div>
     </div>
