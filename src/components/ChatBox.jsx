@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
+  doc,
+  getDoc,
   query,
   collection,
   where,
@@ -12,29 +14,50 @@ import ContactMenu from "./ContactMenu";
 import ChatArea from "./ChatArea";
 import "./ChatBox.css";
 
-import { contacts } from "../contacts";
-
 export default function ChatBox(props) {
-  const [contactData, setContactData] = useState(contacts);
-  const [currentContact, setCurrentContact] = useState(contactData[0]);
-
-  const [chat, setChat] = useState({});
+  const [currentContact, setCurrentContact] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [chats, setChats] = useState({});
 
   useEffect(() => {
-    const q = query(
-      collection(db, "userChat"),
+    const chatQuery = query(
+      collection(db, "chats"),
       where("participants", "array-contains", props.uid)
     );
 
-    const unSub = onSnapshot(q, (querySnapshot) => {
-      const chatArray = [];
+    const unSub = onSnapshot(chatQuery, async (querySnapshot) => {
+      const updatedChats = {};
+      const contactIds = [];
+
       querySnapshot.forEach((doc) => {
-        chatArray.push({
-          id: doc.id,
-          ...doc.data(),
-        });
+        const data = doc.data();
+        updatedChats[doc.id] = data;
+
+        const contactId = data.participants.find((user) => user !== props.uid);
+
+        if (contactId) {
+          contactIds.push(contactId);
+        }
       });
-      setChat(chatArray);
+
+      const contacts = await Promise.all(
+        contactIds.map(async (contactId) => {
+          const contactRef = doc(db, "users", contactId);
+          const contactDoc = (await getDoc(contactRef)).data();
+
+          return {
+            id: contactDoc.uid,
+            name: contactDoc.displayName,
+            mail: contactDoc.email,
+            profile: contactDoc.photoURL,
+            isActive: contactDoc.isActive,
+          };
+        }
+      )
+        
+      );
+      setContacts(contacts);
+      setChats(updatedChats);
     });
 
     return () => unSub();
@@ -42,8 +65,8 @@ export default function ChatBox(props) {
 
   return (
     <div className="chatbox">
-      <ContactMenu data={contactData} setCurrentContact={setCurrentContact} />
-      <ChatArea currentContact={currentContact} />
+      <ContactMenu data={contacts} setCurrentContact={setCurrentContact} />
+      <ChatArea currentContact={currentContact} chats={chats} />
     </div>
   );
 }

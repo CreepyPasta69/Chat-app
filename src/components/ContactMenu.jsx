@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import Contact from "./Contact";
 import "./ContactMenu.css";
 
 export default function ContactMenu(props) {
   const [search, setSearch] = useState("");
-  console.log(search);
 
   const contacts = props.data
     .filter((item) => {
@@ -13,14 +11,15 @@ export default function ContactMenu(props) {
         : item.name.toLowerCase().includes(search.toLowerCase());
     })
     .map((contact) => (
-      <Contact
-        key={contact.id}
-        id={contact.id}
-        name={contact.name}
-        setCurrentContact={() => {
-          props.setCurrentContact(contact);
-        }}
-      />
+
+      <div key={contact.id} id={contact.id} className="contact" onClick={()=>{props.setCurrentContact(contact)}}>
+      <img src={contact.profile} alt="" />
+      <div className="details">
+      <p className="name">{contact.name}</p>
+      <p className="last-message">Hello!</p>
+      </div>
+      {contact.isActive && <div className="online"></div>}
+    </div>
     ));
 
   return (

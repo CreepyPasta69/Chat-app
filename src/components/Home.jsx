@@ -10,7 +10,9 @@ import {
   collection,
   where,
   arrayRemove,
+  setDoc,
 } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid"
 
 import Request from "./Request";
 
@@ -30,28 +32,18 @@ export default function Home(props) {
   const [friendRequests, setFriendRequests] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
 
-  useEffect(() => {
+  useEffect(()=>{
     loadFriendRequests();
-    const fetchQuote = async () => {
-      fetch("https://api.quotable.io/quotes/random")
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error("Error:", error));
-    };
-    fetchQuote();
-  }, []);
+  },[])
 
   useEffect(() => {
     if (friendRequestsVisibility) {
       loadFriendRequests();
     }
-  }, [friendRequestsVisibility]);
-
-  useEffect(() => {
     if (friendsListVisibility) {
       loadFriendsList();
     }
-  }, [friendsListVisibility]);
+  }, [friendRequestsVisibility, friendsListVisibility]);
 
   const sendFriendRequest = async (senderId, recieverEmail) => {
     try {
@@ -68,11 +60,12 @@ export default function Home(props) {
       if (querySnapshot.empty) {
         console.error("User with that email does not exist.");
       }
-      console.log(recieverId);
 
       const recieverId = querySnapshot.docs[0].data().uid;
       const recieverRef = doc(db, "users", recieverId);
       const recieverDoc = await getDoc(recieverRef);
+
+      console.log(recieverId);
 
       await updateDoc(senderRef, {
         "friendRequests.sent": arrayUnion(recieverId),
@@ -145,6 +138,35 @@ export default function Home(props) {
       setFriendRequests((prevRequests) =>
         prevRequests.filter((request) => request.id !== friendId)
       );
+
+      const chatQuery = query(collection(db, "chats"), where("participants","array-contains", props.uid))
+      const chatDocs = await getDocs(chatQuery);
+
+      let existingChatId = null;
+      chatDocs.forEach((doc)=>{
+        const chatData = doc.data();
+        if(chatData.participants.includes(friendId)){
+          existingChatId = doc.id;
+        }
+      })
+
+      if(existingChatId){
+        const chatRef = doc(db, "chats", existingChatId);
+        await updateDoc(chatRef,{
+          updatedAt: new Data().toISOString()
+        })
+      }else{
+        const chatId = uuidv4();
+        const chatRef = doc(db, "chats", chatId)
+
+        await setDoc(chatRef, {
+          participants: [props.uid, friendId],
+          messages: [],
+          lastMessage: null,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+      }
 
       console.log("Friend Request Accepted");
     } catch (error) {

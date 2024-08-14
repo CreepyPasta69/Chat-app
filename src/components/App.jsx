@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, db } from "../firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
 import SideBar from "./SideBar";
 import Login from "./Login.jsx";
@@ -39,7 +39,10 @@ export default function App() {
               sent: [],
               recieved: [],
             },
+            isActive: false,
           });
+        }else{
+          await updateDoc(userDocRef, { isActive: true });
         }
         const newUserDoc = await getDoc(userDocRef);
         setUserData(newUserDoc.data());
@@ -50,6 +53,8 @@ export default function App() {
   };
 
   const signOut = async () => {
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, {isActive: false})
     await auth.signOut();
     setUserData(null);
   };

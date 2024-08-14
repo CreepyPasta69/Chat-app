@@ -16,6 +16,10 @@ export default function ChatArea(props) {
     setChat("");
   };
 
+  if (props.currentContact === null){
+    return(<div className="chat-area">Hello User</div>)
+  }
+
   return (
     <div className="chat-area">
       <div className="header">

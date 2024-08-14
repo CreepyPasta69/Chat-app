@@ -70,7 +70,7 @@ export default function SideBar(props) {
         <img src={indicator} alt="" id="indicator" />
       </div>
       <div className="logout">
-        <img src={logout} alt="logout" onClick={props.logout} />
+        <img src={logout} alt="logout" onClick={()=>{props.logout(); props.setActiveMenu("Home")}} />
       </div>
     </div>
   );
