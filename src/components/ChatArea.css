@@ -1,9 +1,10 @@
 .chat-area{
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    width: 100%;
+    width: 200px;
     height: 100%;
     padding: 0px 15px;
     box-sizing: border-box;
@@ -53,18 +54,17 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    /* background-image: url(/src/assets/doodle.png);
-    background-repeat: no-repeat;
-    background-size: cover; */
 }
 
 .chat-area > .messages{
     width: 100%;
+    max-height: calc(100vh - 165px);
     gap: 20px;
     display: flex;
     justify-content: flex-start;
     padding: 0px 5%;
     box-sizing: border-box;
+    overflow: scroll;
 }
 
 /* .chat-area > .messages > p{
@@ -74,6 +74,36 @@
     margin: 0;
     opacity: 80%;
 } */
+
+.message{
+    box-sizing: border-box;
+    position: relative;
+    padding: 10px 50px 10px 20px;
+    max-width: 80%;
+}
+
+.message > p{
+    margin: 0;
+}
+
+.message > span{
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+    font-size: 10px;
+}
+
+.sent{
+    align-self: flex-end;
+    border-radius: 10px 10px 0px 10px;
+    background-color: #6785FF;
+}
+
+.recieved{
+    align-self: flex-start;
+    border-radius: 10px 10px 10px 0px;
+    background-color: #252839;
+}
 
 .chat-area > .message-input{
     display: flex;

@@ -1,4 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { db } from "../firebase";
+import {
+  getDoc,
+  updateDoc,
+  doc,
+  arrayUnion,
+  serverTimestamp,
+} from "firebase/firestore";
+import { v4 as uuid4v } from "uuid";
 
 import Message from "./Message";
 
@@ -10,68 +19,84 @@ import "./ChatArea.css";
 
 export default function ChatArea(props) {
   const [chat, setChat] = useState("");
+  const [message, setMessage] = useState("");
 
-  const sendMessage = () => {
-    console.log("Message : ", chat);
-    setChat("");
+  useEffect(() => {
+    if (props.currentContact) {
+      const contactId = props.currentContact.id;
+      const currentChat = Object.values(props.chats).find((chat) =>
+        chat.participants.includes(contactId)
+      );
+      setChat(currentChat);
+    }
+  }, [props.currentContact, props.chats]);
+
+  if (props.currentContact === null) {
+    return <div className="chat-area">Hello User</div>;
+  }
+
+  const sendMessage = async () => {
+    console.log("Message : ", message);
+    const chatRef = doc(db, "chats", chat.cid);
+    const msgId = uuid4v();
+
+    await updateDoc(chatRef, {
+      messages: arrayUnion({
+        messageId: msgId,
+        sender: props.uid,
+        text: message,
+        timestrap: new Date(),
+        read: false,
+      }),
+      lastMessage: {
+        sender: props.uid,
+        text: message,
+        timestrap: new Date(),
+        read: false,
+      },
+      updatedAt: new Date(),
+    });
+    setMessage("");
   };
 
-  if (props.currentContact === null){
-    return(<div className="chat-area">Hello User</div>)
-  }
+  function formatTime(data) {
+    const date = data.toDate();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
+
+  const messages = chat.messages?.map((msg) => {
+    
+    const messageClass = (msg.sender === props.uid) ? "sent" : "recieved"
+
+    return (
+      <div key={msg.messageId} className={`message ${messageClass}`}>
+        <p>{msg.text}</p>
+        <span>{formatTime(msg.timestrap)}</span>
+      </div>
+    );
+  });
 
   return (
     <div className="chat-area">
       <div className="header">
-        <img src={back} alt="back" id="back-button"/>
+        <img src={back} alt="back" id="back-button" />
         <div className="user">
           <img src={user} alt="user" />
           <p>{props.currentContact.name}</p>
         </div>
       </div>
 
-      <div className="messages">
-        <div className="message sent">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-            placeat sit doloremque nostrum quo, quis impedit, totam dolorum
-            adipisci deleniti illum itaque minus ad labore autem assumenda
-            exercitationem sapiente enim.
-          </p>
-          <span>19:19</span>
-        </div>
-        <div className="message recieved">
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae
-            reiciendis ab iure perspiciatis. Officiis labore iste voluptates
-            autem dicta eum hic voluptatibus, deserunt quo quasi soluta
-            excepturi necessitatibus itaque rem?
-          </p>
-          <span>19:19</span>
-        </div>
-        <div className="message sent">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-            placeat sit 
-          </p>
-          <span>19:19</span>
-        </div>
-        <div className="message sent">
-          <p>
-            L autem assumenda
-            exercitationem sapiente enim.
-          </p>
-          <span>19:19</span>
-        </div>
-      </div>
+      <div className="messages">{messages}</div>
 
       <div className="message-input">
         <input
           type="text"
           placeholder="message.."
-          value={chat}
+          value={message}
           onChange={(e) => {
-            setChat(e.target.value);
+            setMessage(e.target.value);
           }}
         />
         <button onClick={sendMessage}>

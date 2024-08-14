@@ -3,7 +3,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    gap: spac;
+    position: relative;
     height: 100%;
     width: 100%;
     box-shadow:-1px 0px 0px 4px #252839 inset;
@@ -14,6 +14,18 @@
     animation-fill-mode: forwards;
     padding: 5%;
     text-align: center;
+}
+
+.home > .notification{
+    
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    height: 25px;
+    width: 25px;
+    background-color: #252839;
+    padding: 20px;
+    border-radius: 50%;
 }
 
 .home > .intro {
