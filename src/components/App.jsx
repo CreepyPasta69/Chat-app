@@ -87,7 +87,7 @@ export default function App() {
           {activeMenu === "Home" && userData && (
             <Home uid={userData.uid} displayName={userData.displayName} />
           )}
-          {activeMenu === "Chat" && <ChatBox />}
+          {activeMenu === "Chat" && <ChatBox uid={userData.uid}/>}
           {activeMenu === "Profile" && <Profile userData={userData} />}
         </div>
       )}

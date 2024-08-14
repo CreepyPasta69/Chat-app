@@ -19,7 +19,7 @@ export default function ChatArea(props) {
   return (
     <div className="chat-area">
       <div className="header">
-        <img src={back} alt="back" id="back-button" onClick={props.toggle} />
+        <img src={back} alt="back" id="back-button"/>
         <div className="user">
           <img src={user} alt="user" />
           <p>{props.currentContact.name}</p>
