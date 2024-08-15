@@ -17,15 +17,63 @@
 }
 
 .home > .notification{
-    
+    position: absolute;
+    top: 40px;
+    right: 100px;
+    height: 20px;
+    width: 20px;
+    background-color: #252839;
+    padding: 15px;
+    border-radius: 50%;
+    transition: 1s;
+}
+
+.home > .notification:hover{
+    background-color: white;
+}
+
+.home > .notification:hover > svg{
+    fill: black;
+}
+
+.home > .bug{
     position: absolute;
     top: 40px;
     right: 40px;
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
     background-color: #252839;
-    padding: 20px;
+    padding: 15px;
     border-radius: 50%;
+    transition: 1s;
+}
+
+.home > .bug:hover{
+    background-color: black;
+}
+
+.home > .bug:hover > svg{
+    fill: #ED2939;
+}
+
+.home > .bug-menu{
+    position: absolute;
+    right: 40px;
+    top: 80px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    padding: 10px;
+    color: #ED2939;
+}
+
+.home > .bug-menu > h3{
+    margin: 10px;
+}
+
+.home > .bug-menu > textarea{
+    background-color: black;
+    color: red;
+    resize: none;
 }
 
 .home > .intro {
@@ -71,6 +119,7 @@
 
 .home > .friends-mannagement > div:hover{
     background-color: #6785FF;
+    transition: 0.25s;
 }
 
 .home > .friends-mannagement > div > p {

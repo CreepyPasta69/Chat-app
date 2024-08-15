@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import {
-  getDoc,
-  updateDoc,
-  doc,
-  arrayUnion,
-  serverTimestamp,
-} from "firebase/firestore";
+import { updateDoc, doc, arrayUnion } from "firebase/firestore";
 import { v4 as uuid4v } from "uuid";
-
-import Message from "./Message";
 
 import back from "../assets/back.svg";
 import user from "../assets/user.svg";
@@ -61,17 +53,31 @@ export default function ChatArea(props) {
 
   function formatTime(data) {
     const date = data.toDate();
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
     return `${hours}:${minutes}`;
-}
+  }
 
-  const messages = chat.messages?.map((msg) => {
-    
-    const messageClass = (msg.sender === props.uid) ? "sent" : "recieved"
+  const messages = chat.messages?.map((msg, i) => {
+    const messageClass = msg.sender === props.uid ? "sent" : "recieved";
+    const isSameClass = (i > 0 && chat.messages[i - 1].sender) === msg.sender;
+    const isFirstInSequence =
+      !isSameClass && messageClass === "received";
 
     return (
-      <div key={msg.messageId} className={`message ${messageClass}`}>
+      <div
+        key={msg.messageId}
+        className={`message ${messageClass} ${
+          isSameClass ? "continued" : ""
+        }`}
+      >
+        {isFirstInSequence && (
+          <img
+            src={props.currentContact.profileURL}
+            alt={`${props.currentContact.displayName}'s avatar`}
+            className="sender-image"
+          />
+        )}
         <p>{msg.text}</p>
         <span>{formatTime(msg.timestrap)}</span>
       </div>
