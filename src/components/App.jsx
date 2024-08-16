@@ -39,10 +39,7 @@ export default function App() {
               sent: [],
               recieved: [],
             },
-            isActive: false,
           });
-        }else{
-          await updateDoc(userDocRef, { isActive: true });
         }
         const newUserDoc = await getDoc(userDocRef);
         setUserData(newUserDoc.data());
@@ -53,8 +50,6 @@ export default function App() {
   };
 
   const signOut = async () => {
-    const userRef = doc(db, "users", user.uid);
-    await updateDoc(userRef, {isActive: false})
     await auth.signOut();
     setUserData(null);
   };
