@@ -28,50 +28,58 @@ export default function ChatArea(props) {
     }
   }, [chat?.messages]);
 
-/*   useEffect(() => {
+useEffect(() => {
     if (chat && chat.messages) {
-      const updateUnreadMessages = async () => {
-        const updatedMessages = chat.messages.map((msg) =>
-          msg.sender !== props.uid && !msg.read ? { ...msg, read: true } : msg
-        );
-        const chatRef = doc(db, "chats", chat.cid);
-        await updateDoc(chatRef, {
-          message: updatedMessages,
-        });
-
-        //setChat((prevChat) => ({ ...prevChat, messages: updatedMessages }));
-      };
-
-      updateUnreadMessages()
+      const unreadMessages = chat.messages.filter(
+        (msg) => msg.sender !== props.uid && msg.read === false
+      ).length
+      if(unreadMessages > 0){
+        updateUnreadMessages()
+        console.log("Updated Messages")
+      }
     }
-  },[chat,props.uid]); */
+  },[chat,props.uid]);
 
   if (props.currentContact === null) {
     return <div className="chat-area-null">Hello User</div>;
   }
 
   const sendMessage = async () => {
-    console.log("Message : ", message);
-    const chatRef = doc(db, "chats", chat.cid);
-    const msgId = uuid4v();
+    if(message.trim() !== ""){
+      console.log("Message : ", message);
+      const chatRef = doc(db, "chats", chat.cid);
+      const msgId = uuid4v();
 
-    await updateDoc(chatRef, {
-      messages: arrayUnion({
-        messageId: msgId,
-        sender: props.uid,
-        text: message,
-        timestrap: new Date(),
-        read: false,
-      }),
-      lastMessage: {
-        sender: props.uid,
-        text: message,
-        timestrap: new Date(),
-        read: false,
-      },
-      updatedAt: new Date(),
-    });
+      await updateDoc(chatRef, {
+        messages: arrayUnion({
+          messageId: msgId,
+          sender: props.uid,
+          text: message,
+          timestrap: new Date(),
+          read: false,
+        }),
+        lastMessage: {
+          sender: props.uid,
+          text: message,
+          timestrap: new Date(),
+          read: false,
+        },
+        updatedAt: new Date(),
+      });
+    }
     setMessage("");
+  };
+
+  const updateUnreadMessages = async () => {
+    const updatedMessages = chat.messages.map((msg) =>
+      msg.sender !== props.uid && !msg.read ? { ...msg, read: true } : msg
+    );
+    const chatRef = doc(db, "chats", chat.cid);
+    await updateDoc(chatRef, {
+      messages: updatedMessages,
+    });
+
+    //setChat((prevChat) => ({ ...prevChat, messages: updatedMessages }));
   };
 
   function formatTime(data) {
@@ -88,6 +96,11 @@ export default function ChatArea(props) {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
+
+  const unreadMessages = chat.messages?.filter(
+    (msg) => msg.sender !== props.uid && msg.read === false
+  ).length
+  console.log(unreadMessages)
 
   const messages = chat.messages?.map((msg, i) => {
     const messageClass = msg.sender === props.uid ? "sent" : "recieved";
