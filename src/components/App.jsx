@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { auth, db } from "../firebase.js";
+import { auth, db, rdb } from "../firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { ref, set, onDisconnect, update } from "firebase/database";
 
 import SideBar from "./SideBar";
 import Login from "./Login.jsx";
@@ -50,7 +51,14 @@ export default function App() {
   };
 
   const signOut = async () => {
+
+    const userStatusRef = ref(rdb, `/users/${user.uid}`)
+    update(userStatusRef, {
+      isActive: false
+    })
+    
     await auth.signOut();
+
     setUserData(null);
   };
 
@@ -72,6 +80,20 @@ export default function App() {
       fetchUserData();
     }
   }, [user, userData]);
+
+  useEffect(()=>{
+    if(user){
+      const userStatusRef = ref(rdb, `/users/${user.uid}`);
+      
+      set(userStatusRef, {
+        isActive: true
+      })
+
+      onDisconnect(userStatusRef).update({
+        isActive: false,
+      })
+    }
+  },[user])
 
   return (
     <>

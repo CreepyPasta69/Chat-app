@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {rdb} from "../firebase.js"
+import { ref, onValue} from "firebase/database";
 import "./ContactMenu.css";
 
 export default function ContactMenu(props) {
   const [search, setSearch] = useState("");
+  const [activeStatus, setActiveStatus] = useState({})
+
+  useEffect(()=>{
+    const userRef = ref(rdb, "/users");
+
+    const unsub = onValue(userRef, (snapshot)=>{
+      const status = snapshot.val()
+      setActiveStatus(status);
+    })
+
+    return() => unsub()
+  },[])
 
   const contacts = props.data
     .filter((item) => {
@@ -26,7 +40,7 @@ export default function ContactMenu(props) {
           <p className="last-message">{contact.lastMessage}</p>
         </div>
         {(contact.unreadMessages > 0) && <div className="unread">{contact.unreadMessages}</div>}
-        {contact.isActive && <div className="online"></div>}
+        {activeStatus[contact.id]?.isActive && <div className="online"></div>}
       </div>
     ));
 

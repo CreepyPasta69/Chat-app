@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getDatabase, ref, set } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,7 +15,8 @@ const firebaseConfig = {
   storageBucket: "echo-chatapp-f183f.appspot.com",
   messagingSenderId: "271982547419",
   appId: "1:271982547419:web:b2f1c75b5dd0201629d7fe",
-  measurementId: "G-MSD8T8DSJW"
+  measurementId: "G-MSD8T8DSJW",
+  databaseURL: "https://echo-chatapp-f183f-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
 // Initialize Firebase
@@ -22,3 +24,4 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const rdb = getDatabase(app);

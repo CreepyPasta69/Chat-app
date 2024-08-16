@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { db } from "../firebase.js";
 import {
   doc,
   getDoc,
@@ -8,7 +9,6 @@ import {
   onSnapshot,
   QuerySnapshot,
 } from "firebase/firestore";
-import { db } from "../firebase.js";
 
 import ContactMenu from "./ContactMenu";
 import ChatArea from "./ChatArea";
@@ -54,7 +54,6 @@ export default function ChatBox(props) {
             name: contactDoc.displayName,
             email: contactDoc.email,
             profile: contactDoc.photoURL,
-            isActive: contactDoc.isActive,
             updatedAt: chat.updatedAt?.toMillis() || 0,
             lastMessage: chat.lastMessage?.text || "...",
             unreadMessages: chat.messages.filter(
