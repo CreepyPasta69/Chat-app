@@ -45,17 +45,27 @@ export default function ChatBox(props) {
           const contactRef = doc(db, "users", contactId);
           const contactDoc = (await getDoc(contactRef)).data();
 
+          const chat = Object.values(updatedChats).find((chat) =>
+            chat.participants.includes(contactId)
+          );
+
           return {
             id: contactDoc.uid,
             name: contactDoc.displayName,
-            mail: contactDoc.email,
+            email: contactDoc.email,
             profile: contactDoc.photoURL,
             isActive: contactDoc.isActive,
+            updatedAt: chat.updatedAt?.toMillis() || 0,
+            lastMessage: chat.lastMessage?.text || "...",
+            unreadMessages: chat.messages.filter(
+              (msg) => msg.sender !== props.uid && msg.read === false
+            ).length,
           };
-        }
-      )
-        
+        })
       );
+
+      contacts.sort((a, b) => b.updatedAt - a.updatedAt);
+
       setContacts(contacts);
       setChats(updatedChats);
     });
