@@ -7,7 +7,6 @@ import {
   collection,
   where,
   onSnapshot,
-  QuerySnapshot,
 } from "firebase/firestore";
 
 import ContactMenu from "./ContactMenu";

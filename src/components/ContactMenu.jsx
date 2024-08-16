@@ -26,6 +26,7 @@ export default function ContactMenu(props) {
             item.email.toLowerCase().includes(search.toLowerCase());
     })
     .map((contact) => (
+      <React.Fragment key={contact.id}>
       <div
         key={contact.id}
         id={contact.id}
@@ -42,6 +43,8 @@ export default function ContactMenu(props) {
         {(contact.unreadMessages > 0) && <div className="unread">{contact.unreadMessages}</div>}
         {activeStatus[contact.id]?.isActive && <div className="online"></div>}
       </div>
+      <div className="hr"></div>
+      </React.Fragment>
     ));
 
   return (
@@ -68,7 +71,6 @@ export default function ContactMenu(props) {
         <button>+</button>
       </div>
       <div className="contacts">
-        <div className="indicator"></div>
         {contacts}
       </div>
     </div>
