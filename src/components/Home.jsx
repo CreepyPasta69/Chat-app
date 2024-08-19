@@ -164,7 +164,7 @@ export default function Home(props) {
         const chatRef = doc(db, "chats", chatId);
 
         await setDoc(chatRef, {
-          chatId: chatId,
+          cid: chatId,
           participants: [props.uid, friendId],
           messages: [],
           lastMessage: null,
@@ -177,7 +177,7 @@ export default function Home(props) {
     } catch (error) {
       console.log("Error occured while accepting Friend Request : ", error);
     } finally {
-      loadFriendRequests();
+      await loadFriendRequests();
     }
   };
 
@@ -202,7 +202,7 @@ export default function Home(props) {
     } catch (error) {
       console.log("Error occured while declining Friend Request : ", error);
     } finally {
-      loadFriendRequests();
+      await loadFriendRequests();
     }
   };
 
@@ -290,9 +290,11 @@ export default function Home(props) {
             <path d="M14 14.252V16.3414C13.3744 16.1203 12.7013 16 12 16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14C12.6906 14 13.3608 14.0875 14 14.252ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM19.4184 17H23.0042V19H19.4184L21.2469 20.8284L19.8326 22.2426L15.59 18L19.8326 13.7574L21.2469 15.1716L19.4184 17Z"></path>
           </svg>
           <p>Friend Requests</p>
-          <span>
-            {friendRequests.length == true && <p>{friendRequests.length}</p>}
-          </span>
+          {friendRequests.length !== 0 && (
+            <span>
+              <p>{friendRequests.length}</p>
+            </span>
+          )}
         </div>
         <div
           className="friends-list-btn"
@@ -348,7 +350,7 @@ export default function Home(props) {
       {friendRequestsVisibility && (
         <div className="friend-requests">
           <h2>Friend Requests</h2>
-          {friendRequests.length == 0 ? (
+          {friendRequests.length === 0 ? (
             <p>No friend requests right now.....</p>
           ) : (
             <p>Someone wants to be your friend</p>

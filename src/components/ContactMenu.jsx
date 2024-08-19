@@ -30,7 +30,7 @@ export default function ContactMenu(props) {
       <div
         key={contact.id}
         id={contact.id}
-        className="contact"
+        className={`contact ${(props.currentContact?.id===contact.id) ? `active` : ``}`}
         onClick={() => {
           props.setCurrentContact(contact);
         }}

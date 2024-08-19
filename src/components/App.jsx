@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, db, rdb } from "../firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { ref, set, onDisconnect, update } from "firebase/database";
 
 import SideBar from "./SideBar";
@@ -17,6 +17,26 @@ export default function App() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
   const [activeMenu, setActiveMenu] = useState("Home");
+
+  useEffect(() => {
+    if (user && !userData) {
+      fetchUserData();
+    }
+  }, [user, userData]);
+
+  useEffect(()=>{
+    if(user){
+      const userStatusRef = ref(rdb, `/users/${user.uid}`);
+      
+      set(userStatusRef, {
+        isActive: true
+      })
+
+      onDisconnect(userStatusRef).update({
+        isActive: false,
+      })
+    }
+  },[user])
 
   const googleSignin = async () => {
     const provider = new GoogleAuthProvider();
@@ -53,7 +73,7 @@ export default function App() {
   const signOut = async () => {
 
     const userStatusRef = ref(rdb, `/users/${user.uid}`)
-    update(userStatusRef, {
+    await update(userStatusRef, {
       isActive: false
     })
     
@@ -62,38 +82,19 @@ export default function App() {
     setUserData(null);
   };
 
-  useEffect(() => {
-    if (user && !userData) {
-      async function fetchUserData() {
-        try {
-          const userDocRef = doc(db, "users", user.uid);
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists()) {
-            setUserData(userDoc.data());
-          } else {
-            console.log("File does not exist");
-          }
-        } catch(error) {
-          console.log("Error fetching user data: ", error);
-        }
+  async function fetchUserData() {
+    try {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        setUserData(userDoc.data());
+      } else {
+        console.log("File does not exist");
       }
-      fetchUserData();
+    } catch(error) {
+      console.log("Error fetching user data: ", error);
     }
-  }, [user, userData]);
-
-  useEffect(()=>{
-    if(user){
-      const userStatusRef = ref(rdb, `/users/${user.uid}`);
-      
-      set(userStatusRef, {
-        isActive: true
-      })
-
-      onDisconnect(userStatusRef).update({
-        isActive: false,
-      })
-    }
-  },[user])
+  }
 
   return (
     <>

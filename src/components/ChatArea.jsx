@@ -78,8 +78,6 @@ useEffect(() => {
     await updateDoc(chatRef, {
       messages: updatedMessages,
     });
-
-    //setChat((prevChat) => ({ ...prevChat, messages: updatedMessages }));
   };
 
   function formatTime(data) {
@@ -92,7 +90,7 @@ useEffect(() => {
   function formatDate(data) {
     const date = data.toDate();
     const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
@@ -100,20 +98,20 @@ useEffect(() => {
   const unreadMessages = chat.messages?.filter(
     (msg) => msg.sender !== props.uid && msg.read === false
   ).length
-  console.log(unreadMessages)
 
   const messages = chat.messages?.map((msg, i) => {
-    const messageClass = msg.sender === props.uid ? "sent" : "recieved";
+    const messageClass = msg.sender === props.uid ? "sent" : "received";
     const isSameClassPrev =
       (i > 0 && chat.messages[i - 1].sender) === msg.sender;
     const isSameClassNext =
       (i < chat.messages.length - 1 && chat.messages[i + 1].sender) ===
       msg.sender;
-    const isFirstInSequence = !isSameClassPrev && messageClass === "recieved";
+    const isFirstInSequence = !isSameClassPrev && messageClass === "received";
     const showDate =
-      i == 0 ||
+      i === 0 ||
       formatDate(chat.messages[i].timestrap) !==
         formatDate(chat.messages[i - 1].timestrap);
+    const showUnread = isFirstInSequence && !msg.read;
 
     return (
       <React.Fragment key={msg.messageId}>
@@ -122,6 +120,9 @@ useEffect(() => {
             <span>{formatDate(msg.timestrap)}</span>
           </div>
         )}
+        {showUnread && (<div className="unread"> 
+          <span>{`${unreadMessages} unreadMessages`}</span>
+        </div>)}
         <div
           key={msg.messageId}
           className={`message ${messageClass} ${

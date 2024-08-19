@@ -73,7 +73,7 @@ export default function ChatBox(props) {
 
   return (
     <div className="chatbox">
-      <ContactMenu data={contacts} setCurrentContact={setCurrentContact} />
+      <ContactMenu data={contacts} currentContact={currentContact} setCurrentContact={setCurrentContact} />
       <ChatArea uid={props.uid} currentContact={currentContact} chats={chats} />
     </div>
   );
