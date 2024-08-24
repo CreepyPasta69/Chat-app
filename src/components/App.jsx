@@ -111,7 +111,7 @@ export default function App() {
             <Home uid={userData.uid} displayName={userData.displayName} />
           )}
           {activeMenu === "Chat" && <ChatBox uid={userData.uid}/>}
-          {activeMenu === "Profile" && <Profile userData={userData} />}
+          {activeMenu === "Profile" && <Profile userData={userData} setUserData={setUserData} />}
         </div>
       )}
     </>

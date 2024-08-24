@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 50px;
+    gap: 30px;
     height: 100%;
     width: 100%;
     box-shadow:-4px 0px 0px 4px #252839 inset;
@@ -13,48 +13,107 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     padding: 5%;
-    text-align: center;
 }
 
-.profile > div{
-
-    box-sizing: border-box;
-    position: relative;
-    padding:40px 50px 20px;
-    border-radius: 20px;
-    background-color: #252839;
-    text-align: center;
-}
-
-.profile > div > img{
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translate(-50%, -50%);
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    box-shadow: 1px 1px 6px 2px black;
-}
-
-.profile > .tech{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+.profile > h1{
     padding: 20px 30px;
-}
-
-.profile > .tech > p{
     margin: 0;
 }
 
-.profile > .tech > .images{
+.profile > div{
+    position: relative;
     display: flex;
-    gap: 15px;
+    gap: 50px;
+    box-sizing: border-box;
+    position: relative;
+    padding:40px 50px;
+    border-radius: 20px;
+    background-color: #252839;
 }
 
-.profile > .tech > .images > svg{
-    height: 20px;
+.profile > div > .profile-picture{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.profile > div > .profile-picture > img{
+    height: 200px;
+    width: 200px;
+    border-radius: 20px;
+}
+
+.profile > div > .profile-picture > label{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: transparent;
+    color: #6785FF;
+    width: 150px;
+    padding: 10px;
+    border: dashed 1.5px #6785FF;
+    border-radius: 10px;
+    transition: 0.5s;
+
+}
+
+.profile > div > .profile-picture > label > p{
+    font-size: small;
+    margin: 0;
+}
+
+.profile > div > .profile-picture > label > svg{
+    width: 30px;
+}
+
+.profile > div > .profile-picture > button:hover{
+    background-color: #6785FF;
+    color: white;
+}
+
+.profile > div > .profile-picture > button:hover > svg{
+    fill: white;
+}
+
+.profile > div > .profile-picture > label > input{
+    display: none;
+}
+
+.profile > div > .profile-details{
+    display: flex;
+    flex-direction: column;
+}
+
+.profile > div > .profile-details > .name{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile > div > .profile-details > .name > p > input{
+    background: transparent;
+    color: white;
+    width: fit-content;
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    padding: 2px;
+    border-bottom: solid 1px white;
+}
+
+.profile > div > .profile-details > .name > svg{
     width: 20px;
+    padding: 10px;
+}
+
+.profile > div > .profile-details > .name > svg:hover{
+    border-radius: 20px;
+    background-color: #1D1F2B;
+}
+
+.profile > div > .profile-details > button{
+    height: 40px;
 }
