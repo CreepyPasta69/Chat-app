@@ -88,10 +88,10 @@
 #indicator{
     z-index: 1;
     position: absolute;
-    height: 200px;
-    width: 200px;
-    right: -79px;
-    top: -90px;
+    height: 210px;
+    width: 210px;
+    right: -82px;
+    top: -95px;
     cursor: default;
     transition: transform 0.3s ease-in-out;
     user-select:none;

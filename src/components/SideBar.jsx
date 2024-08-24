@@ -2,6 +2,7 @@ import React from "react";
 
 import logo from "/src/assets/logo.png";
 import indicator from "../assets/indicator.svg";
+import indicatorDark from "../assets/indicator-dark.svg"
 import logout from "../assets/logout.svg";
 
 import "./SideBar.css";
@@ -67,7 +68,7 @@ export default function SideBar(props) {
       </div>
       <div className="menu">
         {...menuItem}
-        <img src={indicator} alt="" id="indicator" />
+        <img src={props.activeMenu === "Chat" ? indicator : indicatorDark} alt="" id="indicator" />
       </div>
       <div className="logout">
         <img

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+  <desc>Created with Fabric.js 5.2.4</desc>
+  <defs/>
+  <rect width="100%" height="100%" fill="transparent" y="0" x="0"/>
+  <g transform="matrix(1 0 0 1 540 540)" id="b36e8295-3a7b-46a7-b559-d82b93c81032">
+    <rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke" x="-540" y="-540" rx="0" ry="0" width="1080" height="1080"/>
+  </g>
+  <g transform="matrix(1 0 0 1 540 540)" id="c7615d3d-5524-4ff5-ab93-8e8b2d862ac9"/>
+  <g transform="matrix(0 -8.19 8.19 0 575.43 556.32)">
+    <g style="" vector-effect="non-scaling-stroke">
+      <g transform="matrix(1 0 0 1 0 0)">
+        <ellipse style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1; fill: rgb(29, 31, 43);" vector-effect="non-scaling-stroke" cx="0" cy="0" rx="24" ry="28"/>
+      </g>
+      <g transform="matrix(1 0 0 1 -23 10)">
+        <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1; fill: rgb(29, 31, 43);" vector-effect="non-scaling-stroke" transform=" translate(-24, -38)" d="M 24 20 C 24 20 28 55.9999 48 56 L 0 55.9997 C 18 55.9998 24 20 24 20 Z" stroke-linecap="round"/>
+      </g>
+      <g transform="matrix(1 0 0 1 23 10)">
+        <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1; fill: rgb(29, 31, 43);" vector-effect="non-scaling-stroke" transform=" translate(-70, -38)" d="M 70 20 C 70 20 66 55.9999 46 56 L 94 55.9997 C 76 55.9998 70 20 70 20 Z" stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+  <g transform="matrix(NaN NaN NaN NaN 0 0)">
+    <g style=""/>
+  </g>
+  <g transform="matrix(NaN NaN NaN NaN 0 0)">
+    <g style=""/>
+  </g>
+</svg>
