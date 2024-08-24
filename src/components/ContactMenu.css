@@ -19,23 +19,24 @@
 
 .contact-menu > .header > .search{
     position: relative;
-    width: 80%;
+    width: 97%;
 }
 
 .contact-menu > .header > .search > input{
-    height: 25px;
+    height: 30px;
     width: 100%;
     border: none;
     border-radius: 5px;
     padding: 0;
-    padding-right: 25px;
+    padding-right: 35px;
     text-indent: 15px;
     box-sizing: border-box;
 }
 
 .contact-menu > .header > .search > button{
     position: absolute;
-    right: 0;
+    top: 2px;
+    right: 5px;
     background-color: transparent;
     border: none;
     height: 25px;
@@ -74,6 +75,7 @@
     flex-direction: row;
     align-items: center;
     gap: 15px;
+    width: 100%;
     min-width: 0;
     height: 64px;
     margin: 5px 15px 5px 0px;
@@ -84,10 +86,9 @@
 }
 
 .contact > img{
-    height: 50px;
-    width: 50px;
+    height: 52.2px;
+    width: 52.2px;
     border-radius: 20px;
-    padding: 2px;
 }
 
 .contact > .details {
@@ -140,6 +141,10 @@
     padding-left: 1px;
 }
 
-.active > img{
-    background-color: #6785FF;
+.contact.active > img{
+    width: 48px;
+    height: 48px;
+    padding: 2px;
+    background-color: #1D1F2B;
+    border: 2px solid #6785FF;
 }

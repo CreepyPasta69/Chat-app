@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import {rdb} from "../firebase.js"
-import { ref, onValue} from "firebase/database";
+import { rdb } from "../firebase.js";
+import { ref, onValue } from "firebase/database";
 import "./ContactMenu.css";
 
 export default function ContactMenu(props) {
   const [search, setSearch] = useState("");
-  const [activeStatus, setActiveStatus] = useState({})
+  const [activeStatus, setActiveStatus] = useState({});
 
-  useEffect(()=>{
+  useEffect(() => {
     const userRef = ref(rdb, "/users");
 
-    const unsub = onValue(userRef, (snapshot)=>{
-      const status = snapshot.val()
+    const unsub = onValue(userRef, (snapshot) => {
+      const status = snapshot.val();
       setActiveStatus(status);
-    })
+    });
 
-    return() => unsub()
-  },[])
+    return () => unsub();
+  }, []);
 
   const contacts = props.data
     .filter((item) => {
@@ -27,23 +27,27 @@ export default function ContactMenu(props) {
     })
     .map((contact) => (
       <React.Fragment key={contact.id}>
-      <div
-        key={contact.id}
-        id={contact.id}
-        className={`contact ${(props.currentContact?.id===contact.id) ? `active` : ``}`}
-        onClick={() => {
-          props.setCurrentContact(contact);
-        }}
-      >
-        <img src={contact.profile} alt="" />
-        <div className="details">
-          <p className="name">{contact.name}</p>
-          <p className="last-message">{contact.lastMessage}</p>
+        <div
+          key={contact.id}
+          id={contact.id}
+          className={`contact ${
+            props.currentContact?.id === contact.id ? `active` : ``
+          }`}
+          onClick={() => {
+            props.setCurrentContact(contact);
+          }}
+        >
+          <img src={contact.profile} alt="" />
+          <div className="details">
+            <p className="name">{contact.name}</p>
+            <p className="last-message">{contact.lastMessage}</p>
+          </div>
+          {contact.unreadMessages > 0 && (
+            <div className="unread">{contact.unreadMessages}</div>
+          )}
+          {activeStatus[contact.id]?.isActive && <div className="online"></div>}
         </div>
-        {(contact.unreadMessages > 0) && <div className="unread">{contact.unreadMessages}</div>}
-        {activeStatus[contact.id]?.isActive && <div className="online"></div>}
-      </div>
-      <div className="hr"></div>
+        <div className="hr"></div>
       </React.Fragment>
     ));
 
@@ -68,11 +72,8 @@ export default function ContactMenu(props) {
             </button>
           )}
         </div>
-        <button>+</button>
       </div>
-      <div className="contacts">
-        {contacts}
-      </div>
+      <div className="contacts">{contacts}</div>
     </div>
   );
 }
