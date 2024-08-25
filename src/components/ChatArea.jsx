@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { db } from "../firebase";
 import { updateDoc, doc, arrayUnion } from "firebase/firestore";
 import { v4 as uuid4v } from "uuid";
+import EmojiPicker from "emoji-picker-react";
 
 import back from "../assets/back.svg";
 
@@ -10,6 +11,7 @@ import "./ChatArea.css";
 export default function ChatArea(props) {
   const [chat, setChat] = useState("");
   const [message, setMessage] = useState("");
+  const [emojiPickerVisibility, setEmojiPickerVisibility] = useState(false);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -28,24 +30,24 @@ export default function ChatArea(props) {
     }
   }, [chat?.messages]);
 
-useEffect(() => {
+  useEffect(() => {
     if (chat && chat.messages) {
       const unreadMessages = chat.messages.filter(
         (msg) => msg.sender !== props.uid && msg.read === false
-      ).length
-      if(unreadMessages > 0){
-        updateUnreadMessages()
-        console.log("Updated Messages")
+      ).length;
+      if (unreadMessages > 0) {
+        updateUnreadMessages();
+        console.log("Updated Messages");
       }
     }
-  },[chat,props.uid]);
+  }, [chat, props.uid]);
 
   if (props.currentContact === null) {
     return <div className="chat-area-null">Hello User</div>;
   }
 
   const sendMessage = async () => {
-    if(message.trim() !== ""){
+    if (message.trim() !== "") {
       console.log("Message : ", message);
       const chatRef = doc(db, "chats", chat.cid);
       const msgId = uuid4v();
@@ -69,6 +71,11 @@ useEffect(() => {
     }
     setMessage("");
   };
+
+  const handleEmoji = (e) =>{
+    setMessage((prev)=>(prev + e.emoji))
+    setEmojiPickerVisibility(false)
+  }
 
   const updateUnreadMessages = async () => {
     const updatedMessages = chat.messages.map((msg) =>
@@ -97,7 +104,7 @@ useEffect(() => {
 
   const unreadMessages = chat.messages?.filter(
     (msg) => msg.sender !== props.uid && msg.read === false
-  ).length
+  ).length;
 
   const messages = chat.messages?.map((msg, i) => {
     const messageClass = msg.sender === props.uid ? "sent" : "received";
@@ -120,9 +127,11 @@ useEffect(() => {
             <span>{formatDate(msg.timestrap)}</span>
           </div>
         )}
-        {showUnread && (<div className="unread"> 
-          <span>{`${unreadMessages} unreadMessages`}</span>
-        </div>)}
+        {showUnread && (
+          <div className="unread">
+            <span>{`${unreadMessages} unreadMessages`}</span>
+          </div>
+        )}
         <div
           key={msg.messageId}
           className={`message ${messageClass} ${
@@ -174,6 +183,28 @@ useEffect(() => {
       </div>
 
       <div className="message-input">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          onClick={() => setEmojiPickerVisibility((prev) => !prev)}
+        >
+          <g fill="none" fill-rule="evenodd">
+            <path
+              d="M24 0v24H0V0h24ZM12.593 23.258l-0.011 0.002 -0.071 0.035 -0.02 0.004 -0.014 -0.004 -0.071 -0.035c-0.01 -0.004 -0.019 -0.001 -0.024 0.005l-0.004 0.01 -0.017 0.428 0.005 0.02 0.01 0.013 0.104 0.074 0.015 0.004 0.012 -0.004 0.104 -0.074 0.012 -0.016 0.004 -0.017 -0.017 -0.427c-0.002 -0.01 -0.009 -0.017 -0.017 -0.018Zm0.265 -0.113 -0.013 0.002 -0.185 0.093 -0.01 0.01 -0.003 0.011 0.018 0.43 0.005 0.012 0.008 0.007 0.201 0.093c0.012 0.004 0.023 0 0.029 -0.008l0.004 -0.014 -0.034 -0.614c-0.003 -0.012 -0.01 -0.02 -0.02 -0.022Zm-0.715 0.002a0.023 0.023 0 0 0 -0.027 0.006l-0.006 0.014 -0.034 0.614c0 0.012 0.007 0.02 0.017 0.024l0.015 -0.002 0.201 -0.093 0.01 -0.008 0.004 -0.011 0.017 -0.43 -0.003 -0.012 -0.01 -0.01 -0.184 -0.092Z"
+              stroke-width="1"
+            ></path>
+            <path
+              fill="currentColor"
+              d="M12 2c5.523 0 10 4.477 10 10s-4.477 10 -10 10S2 17.523 2 12 6.477 2 12 2Zm2.8 11.857A3.984 3.984 0 0 1 12 15a3.984 3.984 0 0 1 -2.8 -1.143 1 1 0 1 0 -1.4 1.428A5.984 5.984 0 0 0 12 17a5.984 5.984 0 0 0 4.2 -1.715 1 1 0 0 0 -1.4 -1.428ZM8.5 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0 -3Zm7 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0 -3Z"
+              stroke-width="1"
+            ></path>
+          </g>
+        </svg>
+
+        <div className="emoji-picker">
+          <EmojiPicker open={emojiPickerVisibility} onEmojiClick={handleEmoji}/>
+        </div>
+
         <input
           type="text"
           placeholder="message.."
