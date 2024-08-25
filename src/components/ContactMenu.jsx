@@ -4,6 +4,7 @@ import { ref, onValue } from "firebase/database";
 import "./ContactMenu.css";
 
 export default function ContactMenu(props) {
+  console.log(props)
   const [search, setSearch] = useState("");
   const [activeStatus, setActiveStatus] = useState({});
 
@@ -25,8 +26,10 @@ export default function ContactMenu(props) {
         : item.name.toLowerCase().includes(search.toLowerCase()) ||
             item.email.toLowerCase().includes(search.toLowerCase());
     })
-    .map((contact) => (
-      <React.Fragment key={contact.id}>
+    .map((contact) => {
+      const isRecieved = contact.id === (contact.lastMessage?.sender || null);
+
+      return (
         <div
           key={contact.id}
           id={contact.id}
@@ -40,38 +43,38 @@ export default function ContactMenu(props) {
           <img src={contact.profile} alt="" />
           <div className="details">
             <p className="name">{contact.name}</p>
-            <p className="last-message">{contact.lastMessage}</p>
+            <p className="last-message">
+              {!isRecieved ? "You: " : ""}
+              {contact.lastMessage?.text || "..."}
+            </p>
           </div>
           {contact.unreadMessages > 0 && (
             <div className="unread">{contact.unreadMessages}</div>
           )}
           {activeStatus[contact.id]?.isActive && <div className="online"></div>}
         </div>
-        <div className="hr"></div>
-      </React.Fragment>
-    ));
+      );
+    });
 
   return (
     <div className="contact-menu">
-      <h1>Chats</h1>
-      <div className="header">
-        <div className="search">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          {search !== "" && (
-            <button
-              onClick={() => {
-                setSearch("");
-              }}
-            >
-              x
-            </button>
-          )}
-        </div>
+      {/* <h1>Chats</h1> */}
+      <div className="search">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        {search !== "" && (
+          <button
+            onClick={() => {
+              setSearch("");
+            }}
+          >
+            x
+          </button>
+        )}
       </div>
       <div className="contacts">{contacts}</div>
     </div>

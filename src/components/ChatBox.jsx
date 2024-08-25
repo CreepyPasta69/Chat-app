@@ -54,7 +54,7 @@ export default function ChatBox(props) {
             email: contactDoc.email,
             profile: contactDoc.photoURL,
             updatedAt: chat.updatedAt?.toMillis() || 0,
-            lastMessage: chat.lastMessage?.text || "...",
+            lastMessage: chat.lastMessage,
             unreadMessages: chat.messages.filter(
               (msg) => msg.sender !== props.uid && msg.read === false
             ).length,
