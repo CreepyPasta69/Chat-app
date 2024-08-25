@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, db, rdb } from "../firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, onSnapshot } from "firebase/firestore";
 import { ref, set, onDisconnect, update } from "firebase/database";
 
 import SideBar from "./SideBar";
@@ -19,82 +19,76 @@ export default function App() {
   const [activeMenu, setActiveMenu] = useState("Home");
 
   useEffect(() => {
-    if (user && !userData) {
-      fetchUserData();
-    }
-  }, [user, userData]);
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      const unsub = onSnapshot(
+        userDocRef,
+        async (docSnapshot) => {
+          if (docSnapshot.exists()) {
+            setUserData(docSnapshot.data());
+          } else {
+            const newUserData = {
+              uid: user.uid,
+              displayName: user.displayName,
+              email: user.email,
+              photoURL: user.photoURL,
+              createdAt: new Date(),
+              friends: [],
+              friendRequests: {
+                sent: [],
+                received: [],
+              },
+            };
 
-  useEffect(()=>{
-    if(user){
+            try {
+              await setDoc(userDocRef, newUserData);
+              setUserData(newUserDoc.data());
+            } catch (error) {
+              console.log("Error creating user document: ", error);
+            }
+          }
+        },
+        (error) => {
+          console.log("Error fetching user data: ", error);
+        }
+      );
+
       const userStatusRef = ref(rdb, `/users/${user.uid}`);
-      
+
       set(userStatusRef, {
-        isActive: true
-      })
+        isActive: true,
+      });
 
       onDisconnect(userStatusRef).update({
         isActive: false,
-      })
+      });
+
+      return () => {
+        unsub();
+        set(userStatusRef, null);
+      };
     }
-  },[user])
+  }, [user]);
 
   const googleSignin = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-
-        if (!userDoc.exists()) {
-          await setDoc(userDocRef, {
-            uid: user.uid,
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-            createdAt: new Date(),
-            friends: [],
-            friendRequests: {
-              sent: [],
-              recieved: [],
-            },
-          });
-        }
-        const newUserDoc = await getDoc(userDocRef);
-        setUserData(newUserDoc.data());
-      }
+      await signInWithPopup(auth, provider);
     } catch (error) {
       console.log("Error while signing in: ", error);
     }
   };
 
   const signOut = async () => {
-
-    const userStatusRef = ref(rdb, `/users/${user.uid}`)
+    const userStatusRef = ref(rdb, `/users/${user.uid}`);
     await update(userStatusRef, {
-      isActive: false
-    })
-    
+      isActive: false,
+    });
+
     await auth.signOut();
 
     setUserData(null);
   };
-
-  async function fetchUserData() {
-    try {
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
-      if (userDoc.exists()) {
-        setUserData(userDoc.data());
-      } else {
-        console.log("File does not exist");
-      }
-    } catch(error) {
-      console.log("Error fetching user data: ", error);
-    }
-  }
 
   return (
     <>
@@ -110,8 +104,10 @@ export default function App() {
           {activeMenu === "Home" && userData && (
             <Home uid={userData.uid} displayName={userData.displayName} />
           )}
-          {activeMenu === "Chat" && <ChatBox uid={userData.uid}/>}
-          {activeMenu === "Profile" && <Profile userData={userData} setUserData={setUserData} />}
+          {activeMenu === "Chat" && <ChatBox uid={userData.uid} />}
+          {activeMenu === "Profile" && (
+            <Profile userData={userData} setUserData={setUserData} />
+          )}
         </div>
       )}
     </>
