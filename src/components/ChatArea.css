@@ -9,6 +9,7 @@
     padding: 0 15px;
     box-sizing: border-box;
     min-width: 0;
+    background-image: url(/src/assets/Emojibg7.png);
 }
 
 .chat-area > .header{

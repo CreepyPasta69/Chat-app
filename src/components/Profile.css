@@ -36,13 +36,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
 }
 
 .profile > div > .profile-picture > img{
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
     border-radius: 20px;
+    margin-bottom: 10px;
+    object-fit: cover;
 }
 
 .profile > div > .profile-picture > label{
@@ -57,7 +59,9 @@
     border: dashed 1.5px #6785FF;
     border-radius: 10px;
     transition: 0.5s;
-
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
 .profile > div > .profile-picture > label > p{
@@ -69,9 +73,38 @@
     width: 30px;
 }
 
-.profile > div > .profile-picture > button:hover{
-    background-color: #6785FF;
+.profile > div > .profile-picture > .change{
+    display: flex;
+    gap: 10px;
+    transition: 0.5s;
+}
+
+.profile > div > .profile-picture > .change > button{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 70px;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.profile > div > .profile-picture > .change > button > svg{
+    width: 20px;
+}
+
+.profile > div > .profile-picture > .change > .save{
     color: white;
+    background-color: #6785FF;
+}
+
+.profile > div > .profile-picture > .change > .discard{
+    color: #6785FF;
+    background-color: transparent;
+    border: dashed 1px #6785FF;
+
 }
 
 .profile > div > .profile-picture > button:hover > svg{
@@ -117,3 +150,5 @@
 .profile > div > .profile-details > button{
     height: 40px;
 }
+
+/* #bf3232 */
